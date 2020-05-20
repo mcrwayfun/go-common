@@ -30,6 +30,7 @@ v := make([]int, 100)
 
 1. 数组是值，将一个数组赋予另外一个数组时，将会复制所有元素
 2. 若将某个数组传入某个函数，它将收到该数组的一份副本而非指针
+   1. 传递的是副本？为什么可以修改数组的值？
 3. 数组的大小是其类型的一部分。类型 `[10]int` 和 `[20]int` 是不同的
 
 ## 切片
@@ -53,4 +54,85 @@ v := make([]int, 100)
    ```
 
 4. 要删除映射中的某项，可使用内建函数 `delete`，它以映射及要被删除的键为实参。 即便对应的键不在该映射中，此操作也是安全的。
+
+## append
+
+1. 可以将值追加到切片上
+
+   ```go
+   var str []string
+   str = append(str,"hello")
+   var str1 []string
+   // 追加切片
+   str = append(str,str1...)
+   ```
+
+
+## 问题
+
+1. map是值传递（拷贝），但是在func中修改值后也会影响到原本。
+
+```go
+type Person struct {
+	Name string
+}
+
+func main() {
+	// 数组是值，将一个数组赋予另外一个数组时，将会复制所有元素
+	a := [3]int{1, 2, 3}
+	b := [3]int{}
+	b = a
+	fmt.Println(b)
+
+	fmt.Printf("%p\n", &a)
+	// 若将某个数组传入某个函数，它将接收到该数组的一份副本而非指针
+	a = passArray(a)
+	fmt.Printf("%p\n", &a)
+	fmt.Printf("%v\n", a)
+
+	m := make(map[string]Person, 0)
+	p := Person{"gavin"}
+	m["hello"] = p
+	fmt.Printf("%p\n", &m)
+	passMap(m)
+	fmt.Printf("%v\n", m)
+
+	var t interface{}
+	t = m
+	switch t := t.(type) {
+	case map[string]Person:
+		fmt.Printf("m is map[string]Person %T", t)
+	default:
+		fmt.Printf("un defined type %T", t)
+	}
+}
+
+func passMap(m map[string]Person) {
+	p := Person{"royce"}
+	m["hello"] = p
+	fmt.Printf("%p\n", m)
+}
+
+func passArray(c [3]int) [3]int {
+	fmt.Printf("%p\n", &c)
+	c[0] = 5
+	return c
+}
+
+// output
+[1 2 3]
+0xc00009c000
+0xc00009c040
+0xc00009c000
+[5 2 3]
+0xc000092020
+0xc000074180
+map[hello:{royce}]
+m is map[string]Person map[string]main.Person
+Process finished with exit code 0
+```
+
+
+
+
 
