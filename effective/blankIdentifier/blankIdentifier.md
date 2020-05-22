@@ -10,3 +10,30 @@ if _, err := os.Stat(path); os.IsNotExist(err) {
 }
 ```
 
+## 未使用的导入和变量
+
+若导入某个包或声明某个变量而不使用它就会产生错误。未使用的包会让程序膨胀并拖慢编译速度， 而已初始化但未使用的变量不仅会浪费计算能力，还有可能暗藏着更大的Bug。 然而在程序开发过程中，经常会产生未使用的导入和变量。虽然以后会用到它们， 但为了完成编译又不得不删除它们才行，这很让人烦恼。空白标识符就能提供一个工作空间。
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "log"
+    "os"
+)
+
+var _ = fmt.Printf // For debugging; delete when done. // 用于调试，结束时删除。
+var _ io.Reader    // For debugging; delete when done. // 用于调试，结束时删除。
+
+func main() {
+    fd, err := os.Open("test.go")
+    if err != nil {
+        log.Fatal(err)
+    }
+    // TODO: use fd.
+    _ = fd
+}
+```
+
