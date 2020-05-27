@@ -1,0 +1,3 @@
+func Map(mapping func(rune) rune, s string) string
+
+将s的每一个unicode码值r都替换为mapping(r)，返回这些新码值组成的字符串拷贝。如果mapping返回一个负值，将会丢弃该码值而不会被替换。（返回值中对应位置将没有码值）

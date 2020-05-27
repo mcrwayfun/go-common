@@ -1,0 +1,17 @@
+EqualFold(s, t string) bool
+判断两个utf-8编码字符串（将unicode大写、小写、标题三种格式字符视为相同）是否相同。
+
+func main() {
+	// 大小写
+	fmt.Println(strings.EqualFold("abc", "Abc"))
+	// 标题
+	fmt.Println(strings.EqualFold("a b", "A B"))
+	fmt.Println(strings.EqualFold("a b", "a B"))
+	//output
+    //true
+    //true
+    //true
+}
+
+
+
