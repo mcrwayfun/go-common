@@ -1,0 +1,6 @@
+func SplitN(s, sep string, n int) []string
+
+用sqp在s中进行切割，会分割到结尾，并返回生成的所有片段组成的切片（每一个sep都会进行一次切割，即使两个sep相邻，也会进行两次切割）。
+如果sep为空字符，Split会将s切分成每一个unicode码值一个字符串。
+参数n决定返回的切片的数目：
+
