@@ -1,0 +1,3 @@
+func SplitAfter(s, sep string) []string
+
+本质上与Split没有什么区别,不同点在于,分割后的字符会带上sep（最后一个串不带）
